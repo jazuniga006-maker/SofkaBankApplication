@@ -1,4 +1,4 @@
-# Banco DevSu - Documentación de Validaciones y Arquitectura
+# Sofka - Documentación de Validaciones y Arquitectura
 
 ## 1. Introducción
 
