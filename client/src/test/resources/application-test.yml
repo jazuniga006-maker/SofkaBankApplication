@@ -1,6 +1,6 @@
 spring:
   r2dbc:
-    url: r2dbc:h2:mem:///banktestdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    url: r2dbc:h2:mem:///banktestdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;DATABASE_TO_UPPER=FALSE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
     username: sa
     password: sa
 
