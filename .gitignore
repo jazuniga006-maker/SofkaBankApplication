@@ -1,0 +1,67 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Archivos de entorno y credenciales (¡Nunca subir esto!)
+.env
+.env.local
+.env.*.local
+*.env
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### POSTGRESQL ###
+postgres/
+
+### JAVA ###
+# Compilados de Java
+*.class
+*.log
+
+# Archivos de empaquetado (Se generan en la compilación)
+*.jar
+*.war
+*.ear
+*.nar
+
+ Errores del sistema y volcados de memoria
+hs_err_pid*
+replay_pid*
+error_log*
+
+# Directorios de compilación (Maven / Gradle / Ant)
+target/
+build/
+bin/
+
+# Carpetas de Dependencias
+.gradle/
+.settings/

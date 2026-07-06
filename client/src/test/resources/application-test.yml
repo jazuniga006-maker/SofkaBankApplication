@@ -1,0 +1,21 @@
+spring:
+  r2dbc:
+    url: r2dbc:h2:mem:///banktestdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    username: sa
+    password: sa
+
+  sql:
+    init:
+      mode: always
+
+  h2:
+    console:
+      enabled: false
+
+logging:
+  level:
+    org.springframework.r2dbc: INFO
+    io.r2dbc.h2: WARN
+
+server:
+  port: 0

@@ -1,0 +1,188 @@
+openapi: 3.0.3
+info:
+  description: API reactiva para gestión de clientes
+  title: Client Service API
+  version: 1.0.0
+servers:
+- description: Local server
+  url: http://localhost:8081
+paths:
+  /api/v1/customers:
+    get:
+      operationId: getAllClients
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ClientDto"
+                type: array
+          description: Lista de clientes
+      summary: Obtener todos los clientes
+      x-accepts:
+      - application/json
+    post:
+      operationId: createClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientDto"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientDto"
+          description: Cliente creado
+        "409":
+          description: DNI ya existe
+      summary: Crear cliente
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+    put:
+      operationId: updateClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientDto"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientDto"
+          description: Cliente actualizado
+        "400":
+          description: ID requerido
+        "404":
+          description: Cliente no encontrado
+      summary: Actualizar cliente completo
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v1/customers/{id}:
+    delete:
+      operationId: deleteClient
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Eliminado correctamente
+        "404":
+          description: Cliente no encontrado
+      summary: Eliminar cliente
+      x-accepts:
+      - application/json
+    get:
+      operationId: getClientById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientDto"
+          description: Cliente encontrado
+        "404":
+          description: Cliente no encontrado
+      summary: Obtener cliente por ID
+      x-accepts:
+      - application/json
+    patch:
+      operationId: partialUpdateClient
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PartialClientDto"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientDto"
+          description: Cliente actualizado parcialmente
+        "404":
+          description: Cliente no encontrado
+      summary: Actualización parcial (activar/desactivar)
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    ClientDto:
+      example:
+        password: password
+        address: address
+        gender: gender
+        phone: phone
+        name: name
+        id: 0
+        isActive: true
+        dni: dni
+        age: 6
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        dni:
+          type: string
+        gender:
+          type: string
+        age:
+          type: integer
+        address:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        isActive:
+          type: boolean
+      required:
+      - dni
+      - name
+      - password
+      type: object
+    PartialClientDto:
+      example:
+        isActive: true
+      properties:
+        isActive:
+          type: boolean
+      required:
+      - isActive
+      type: object

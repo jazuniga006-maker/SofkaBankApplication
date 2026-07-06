@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS clients (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    dni VARCHAR(20) NOT NULL UNIQUE,
+    gender VARCHAR(10),
+    age INTEGER CHECK (age >= 0),
+    address VARCHAR(255),
+    phone VARCHAR(20),
+    password VARCHAR(255) NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
+);

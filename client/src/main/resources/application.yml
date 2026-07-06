@@ -1,0 +1,46 @@
+server:
+  port: 8082
+spring:
+  sql:
+    init:
+      mode: always
+      platform: postgres
+  application:
+    name: client-service
+  r2dbc:
+    url: ${SPRING_R2DBC_URL:r2dbc}
+    username: ${SPRING_R2DBC_USERNAME}
+    password: ${SPRING_R2DBC_PASSWORD}
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server:
+          requests: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      clientService:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+
+  retry:
+    instances:
+      clientService:
+        maxAttempts: 3
+        waitDuration: 500ms

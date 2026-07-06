@@ -1,0 +1,167 @@
+openapi: 3.0.3
+info:
+  title: Client Service API
+  description: API reactiva para gestión de clientes
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8081
+    description: Local server
+
+paths:
+
+  /api/v1/customers:
+    get:
+      summary: Obtener todos los clientes
+      operationId: getAllClients
+      responses:
+        '200':
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientDto'
+
+    post:
+      summary: Crear cliente
+      operationId: createClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientDto'
+      responses:
+        '201':
+          description: Cliente creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDto'
+        '409':
+          description: DNI ya existe
+
+    put:
+      summary: Actualizar cliente completo
+      operationId: updateClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientDto'
+      responses:
+        '200':
+          description: Cliente actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDto'
+        '400':
+          description: ID requerido
+        '404':
+          description: Cliente no encontrado
+
+  /api/v1/customers/{id}:
+    get:
+      summary: Obtener cliente por ID
+      operationId: getClientById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDto'
+        '404':
+          description: Cliente no encontrado
+
+    patch:
+      summary: Actualización parcial (activar/desactivar)
+      operationId: partialUpdateClient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartialClientDto'
+      responses:
+        '200':
+          description: Cliente actualizado parcialmente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDto'
+        '404':
+          description: Cliente no encontrado
+
+    delete:
+      summary: Eliminar cliente
+      operationId: deleteClient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Eliminado correctamente
+        '404':
+          description: Cliente no encontrado
+
+components:
+
+  schemas:
+
+    ClientDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        dni:
+          type: string
+        gender:
+          type: string
+        age:
+          type: integer
+        address:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        isActive:
+          type: boolean
+      required:
+        - name
+        - dni
+        - password
+
+    PartialClientDto:
+      type: object
+      properties:
+        isActive:
+          type: boolean
+      required:
+        - isActive

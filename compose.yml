@@ -1,0 +1,46 @@
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: bank_postgres
+    environment:
+      POSTGRES_DB: bankdb
+      POSTGRES_USER: ${SPRING_R2DBC_USERNAME}
+      POSTGRES_PASSWORD: ${SPRING_R2DBC_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${SPRING_R2DBC_USERNAME} -d bankdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  account:
+    build: ./account
+    container_name: account-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/bankdb
+      SPRING_R2DBC_USERNAME: ${SPRING_R2DBC_USERNAME}
+      SPRING_R2DBC_PASSWORD: ${SPRING_R2DBC_PASSWORD}
+      CLIENT_SERVICE_URL: http://client:8082/api/v1/clients
+
+  client:
+    build: ./client
+    container_name: client-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/bankdb
+      SPRING_R2DBC_USERNAME: ${SPRING_R2DBC_USERNAME}
+      SPRING_R2DBC_PASSWORD: ${SPRING_R2DBC_PASSWORD}
+      
